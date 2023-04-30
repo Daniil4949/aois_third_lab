@@ -1,24 +1,55 @@
+import math
+
+
+def get_bin(x):
+    return str(bin(x))[2:]
+
+
+def complement(string, x):
+    return "0" * (x - len(string)) + string
+
+
 class TruthTableHandler:
     @staticmethod
     def permutation(n):
-        truth_table = []
-        first_permutation = [False] * n
-        truth_table.append(first_permutation)
+        vars_permutation = [[False] * n]
         while True:
-            iteration = len(first_permutation) - 1
-            current_permutation = truth_table[-1].copy()
-            while iteration >= 0 and current_permutation[iteration]:
-                iteration -= 1
-            if iteration < 0:
+            iter = n - 1
+            current_permutation = vars_permutation[-1].copy()
+            while iter >= 0:
+                if not current_permutation[iter]:
+                    break
+                iter -= 1
+            if iter < 0:
                 break
-            current_permutation[iteration] = True
-            iteration += 1
-            while iteration < n:
-                current_permutation[iteration] = False
-                iteration += 1
+            current_permutation[iter] = True
+            iter += 1
+            while iter < n:
+                current_permutation[iter] = False
+                iter += 1
+            vars_permutation.append(current_permutation)
+        return vars_permutation
 
-            truth_table.append(current_permutation)
-        return truth_table
+    @staticmethod
+    def another_permutation(n):
+        print(n)
+        print("another")
+        unique_vars = int(math.log(n, 2))
+        result = []
+        value = 0
+        for iteration in range(n):
+            bin_value = get_bin(value)
+            bin_value = complement(bin_value, unique_vars)
+            additional_list = []
+            for element in bin_value:
+                if element != "0":
+                    additional_list.append(True)
+                else:
+                    additional_list.append(False)
+            result.append(additional_list)
+            value += 1
+        return result
+
 
     @staticmethod
     def print_truth_table(truth_table, variables, expression_result):
