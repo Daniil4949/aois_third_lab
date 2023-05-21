@@ -50,7 +50,6 @@ class TruthTableHandler:
             value += 1
         return result
 
-
     @staticmethod
     def print_truth_table(truth_table, variables, expression_result):
         for var in variables:
@@ -93,6 +92,16 @@ class TruthTableHandler:
             print("Principal disjunction normal function:\n" + disjunction_result + "\n")
         else:
             print("Principal disjunction normal function doesn't exist\n")
+
+    @staticmethod
+    def get_dpnf(truth_table, variables, expression_result):
+        disjunction_result = ""
+        parts = TruthTableHandler.calculating_parts_PDNF(truth_table, variables, expression_result)
+        if len(parts) != 0:
+            disjunction_result += parts[0]
+            for i in range(1, len(parts)):
+                disjunction_result += "+" + parts[i]
+        return disjunction_result
 
     @staticmethod
     def calculating_parts_of_pcnf(truth_table, variables, expression_result):
@@ -139,12 +148,6 @@ class TruthTableHandler:
                 else:
                     binary_result += "0"
             results.append(int(binary_result, 2))
-        if len(results) != 0:
-            print("PDNF numeric form:")
-            result = "+(" + str(results[0])
-            for i in range(1, len(results)):
-                result += ", " + str(results[i])
-            print(result + ")\n")
 
     @staticmethod
     def number_result_of_pcnf(truth_table, result):
@@ -156,12 +159,6 @@ class TruthTableHandler:
         for option in suitable_options:
             binary_result = ''.join(['0' if val else '1' for val in option])
             results.append(int(binary_result, 2))
-        if results:
-            print("PCNF numeric form:")
-            result = "*(" + str(results[0])
-            for i in range(1, len(results)):
-                result += ", " + str(results[i])
-            print(result + ")\n")
 
     @staticmethod
     def from_binary_to_int(binary_value):

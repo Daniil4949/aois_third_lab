@@ -4,7 +4,9 @@ from solving.expression_handler import ExpressionHandler
 from solving.truth_table import TruthTableHandler
 from solving.logic_calculator import LogicCalculator
 from solving.context import TruthTableRow
-from solving.minimizing import Karnough
+from solving.minimizing_karno import Karnough
+from solving.utils import translate_dpnf
+from solving.minimizing import solve
 
 
 def main(logic_expression):
@@ -35,10 +37,13 @@ def main(logic_expression):
                 interpretation[unique_variables[i]] = int(truth_table[element][i])
             x = TruthTableRow(value=int(result_of_expression[element]), interpretation=interpretation)
             res.append(x)
-        min_ = Karnough(formula=logic_expression, mode="CNF", unique_vars=set(unique_variables), truth_table=res)
-        min_.karnough_method()
-        min_.print_karnough_table()
-        print(min_.minimized_func)
+        res_ = TruthTableHandler.get_dpnf(truth_table, unique_variables, result_of_expression)
+        min_ = Karnough(logic_value=logic_expression, unique_vars=set(unique_variables), result=res)
+        min_.solution()
+        min_.get_result()
+        print(min_.result_value)
+        res_ = translate_dpnf(res_)
+        solve(res_)
 
 
 def to_truth(result_of_expression, unique_variables, truth_table):
@@ -53,6 +58,4 @@ def to_truth(result_of_expression, unique_variables, truth_table):
 
 
 if __name__ == "__main__":
-    # main("(((!x1)*x2)+(x2->(!x3)))")
-    main("((a->b)->c)")
-
+    main("((a+b)*(!c))")
