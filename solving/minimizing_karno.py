@@ -235,8 +235,7 @@ class Karnough:
         return values
 
     def combine(self, first_value, second_value):
-        first_element = set(self.items(first_value))
-        second_element = set(self.items(second_value))
+        first_element, second_element = set(self.items(first_value)), set(self.items(second_value))
         result = first_element.intersection(second_element)
         flag = False
         if flag: result = [f'!{x}' if '!' not in x else x.replace('!', '') for x in result]
@@ -259,7 +258,8 @@ class Karnough:
         print(*res[0], sep='\t|\t', end='\n' + '_' * 80 + '\n')
         for index, element in enumerate(res[1:]):
             for item in element:
-                print(str(item).center(8 + len(res[0][index + 1]), ' ') if item != element[0] else str(item).center(5, ' '),
+                print(str(item).center(8 + len(res[0][index + 1]), ' ') if item != element[0] else str(item).center(5,
+                                                                                                                    ' '),
                       end=' ')
             print('\n' + '_' * 80, end='\n\n' if index != 1 else '\n')
 
